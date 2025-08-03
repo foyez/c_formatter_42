@@ -14,6 +14,8 @@ import contextlib
 import platform
 import subprocess
 import sys
+import os
+import shutil
 from pathlib import Path
 
 import c_formatter_42.data
@@ -46,7 +48,9 @@ def _config_context():
 
 
 if sys.platform == "linux":
-    CLANG_FORMAT_EXEC = DATA_DIR / "clang-format-linux"
+    CLANG_FORMAT_EXEC = os.getenv("CLANG_FORMAT_PATH") or \
+                        shutil.which("clang-format") or \
+                        str(DATA_DIR / "clang-format-linux")
 elif sys.platform == "darwin":
     if platform.machine() == "arm64":
         # macOS M1 or Apple Silicon
